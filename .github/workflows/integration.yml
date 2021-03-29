@@ -1,14 +1,24 @@
 name: Integration Test
 on: [push]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
+  artifact:
       - uses: actions/checkout@master
       - uses: actions/upload-artifact@v2
         with:
-          name: foo
+          name: "${{ env.GITHUB_SHA }}"
           path: action.yml
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for artifact to succeed
+        uses: fountainhead/action-wait-for-check@v1.0.0
+        id: wait-for-build
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: artifact
+
+      - uses: actions/checkout@master
 
       - name: Self test
         id: selftest
@@ -16,9 +26,9 @@ jobs:
         # Put your action repo here
         uses: ./
         with:
-          artifact_name: foo
+          artifact_name: "${{ env.GITHUB_SHA }}"
           token: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Check outputs
         run: |
-          test "${{ steps.selftest.outputs.myOutput }}" == "Artifact downloaded: foo"
+          test "${{ steps.selftest.outputs.myOutput }}" == "Artifact downloaded: ${{ env.GITHUB_SHA }}"
