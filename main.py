@@ -14,6 +14,8 @@ headers = {
 
 http = urllib3.PoolManager()
 
+print("artifacts_url", artifacts_url)
+
 
 def get_artifact(name):
     r = http.request("GET", artifacts_url, headers=headers)
