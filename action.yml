@@ -1,13 +1,16 @@
-name: "Python Container Action Template"
-description: "Get started with Python Container actions"
-author: "Jacob Tomlinson"
+name: 'Artifact downloader'
+description: 'download an artifact'
+author: 'Bettermarks GmbH'
 inputs:
-  myInput:
-    description: "Input to use"
-    default: "world"
-outputs:
-  myOutput:
-    description: "Output from the action"
+  repo:
+    description: 'the repository to download from'
+  token:
+    description: 'the personal access token'
+  artifact_name:
+    description: 'the name of the artifact'
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: 'python3'
+  main: 'dist/action.py'
+branding:
+  color: "yellow"
+  icon: "download"

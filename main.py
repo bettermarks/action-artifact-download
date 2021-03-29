@@ -1,14 +1,35 @@
+import json
 import os
-import requests  # noqa We are just importing this to prove the dependency installed correctly
+import urllib3
+
+token = os.environ["INPUT_TOKEN"]
+artifact_name = os.environ["INPUT_ARTIFACT_NAME"]
+github_sha = os.getenv("GITHUB_SHA")
+repo = os.getenv("INPUT_REPO", os.getenv("GITHUB_REPOSITORY"))
+
+artifacts_url = f"https://api.github.com/repos/{repo}/actions/artifacts"
+headers = {
+    "Authorization": f"token {token}",
+    "User-Agent": "Python",
+}
+
+http = urllib3.PoolManager()
 
 
-def main():
-    my_input = os.environ["INPUT_MYINPUT"]
+def get_artifact(name):
+    r = http.request("GET", artifacts_url, headers=headers)
+    data = json.loads(r.data.decode("utf-8"))
+    for artifact in data["artifacts"]:
+        if artifact["name"] == name:
+            return artifact
 
-    my_output = f"Hello {my_input}"
 
-    print(f"::set-output name=myOutput::{my_output}")
+def download_artifact(artifact):
+    r = http.request("GET", artifact["archive_download_url"], headers=headers)
+    with open(artifact["name"], "wb") as f:
+        f.write(r.data)
+        print("Artifact downloaded:", artifact["name"])
 
 
 if __name__ == "__main__":
-    main()
+    download_artifact(get_artifact(artifact_name))
