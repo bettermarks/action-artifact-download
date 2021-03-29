@@ -14,6 +14,7 @@ headers = {
 
 http = urllib3.PoolManager()
 
+print("env", os.environ)
 print("artifacts_url", artifacts_url)
 
 
