@@ -4,7 +4,7 @@ import urllib3
 
 token = os.environ["INPUT_TOKEN"]
 artifact_name = os.environ["INPUT_ARTIFACT_NAME"]
-repo = os.getenv("INPUT_REPO", os.getenv("GITHUB_REPOSITORY"))
+repo = os.getenv("INPUT_REPO") or os.getenv("GITHUB_REPOSITORY")
 
 artifacts_url = f"https://api.github.com/repos/{repo}/actions/artifacts"
 headers = {
@@ -14,15 +14,10 @@ headers = {
 
 http = urllib3.PoolManager()
 
-print("env", os.environ)
-print("artifacts_url", artifacts_url)
-
 
 def get_artifact(name):
     r = http.request("GET", artifacts_url, headers=headers)
-    print("Response", r)
     data = json.loads(r.data.decode("utf-8"))
-    print("Data", data)
     for artifact in data["artifacts"]:
         if artifact["name"] == name:
             return artifact
