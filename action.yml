@@ -9,8 +9,8 @@ inputs:
   artifact_name:
     description: 'the name of the artifact'
 runs:
-  using: 'python3'
-  main: 'dist/action.py'
+  using: 'docker'
+  image: 'Dockerfile'
 branding:
   color: "yellow"
   icon: "download"
