@@ -27,7 +27,7 @@ def download_artifact(artifact):
     r = http.request("GET", artifact["archive_download_url"], headers=headers)
     with open(artifact["name"], "wb") as f:
         f.write(r.data)
-        print(f"::set-output name=myOutput::Artifact downloaded: {artifact['name']}")
+        print(f"::set-output name=success::Artifact downloaded: {artifact['name']}")
 
 
 if __name__ == "__main__":

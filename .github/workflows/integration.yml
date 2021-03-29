@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/upload-artifact@v2
         with:
-          name: "${ GITHUB_SHA }"
+          name: "${{ env.GITHUB_SHA }}"
           path: action.yml
 
   build:
@@ -28,9 +28,9 @@ jobs:
         # Put your action repo here
         uses: ./
         with:
-          artifact_name: "${ GITHUB_SHA }"
+          artifact_name: "${{ env.GITHUB_SHA }}"
           token: "${{ secrets.GH_BOT_PAT }}"
 
       - name: Check outputs
         run: |
-          test "${{ steps.selftest.outputs.myOutput }}" == "Artifact downloaded: ${{ env.GITHUB_SHA }}"
+          test "${{ steps.selftest.outputs.success }}" == "Artifact downloaded: ${ GITHUB_SHA }"
