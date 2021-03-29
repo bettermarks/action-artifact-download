@@ -33,5 +33,4 @@ jobs:
 
       - name: Check outputs
         run: |
-          env | sort
-          test "${{ steps.selftest.outputs.myOutput }}" == "Artifact downloaded: ${ GITHUB_SHA }"
+          test "${{ steps.selftest.outputs.myOutput }}" == "Artifact downloaded: ${{ env.GITHUB_SHA }}"
