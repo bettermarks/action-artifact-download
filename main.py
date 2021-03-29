@@ -17,7 +17,9 @@ http = urllib3.PoolManager()
 
 def get_artifact(name):
     r = http.request("GET", artifacts_url, headers=headers)
+    print("Response", r)
     data = json.loads(r.data.decode("utf-8"))
+    print("Data", data)
     for artifact in data["artifacts"]:
         if artifact["name"] == name:
             return artifact
