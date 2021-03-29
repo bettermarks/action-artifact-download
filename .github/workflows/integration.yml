@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/upload-artifact@v2
         with:
-          name: "${{ env.GITHUB_SHA }}"
+          name: "${ GITHUB_SHA }"
           path: action.yml
 
   build:
@@ -17,7 +17,7 @@ jobs:
         uses: fountainhead/action-wait-for-check@v1.0.0
         id: wait-for-build
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           checkName: artifact
 
       - uses: actions/checkout@master
@@ -28,8 +28,8 @@ jobs:
         # Put your action repo here
         uses: ./
         with:
-          artifact_name: "${{ env.GITHUB_SHA }}"
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          artifact_name: "${ GITHUB_SHA }"
+          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
 
       - name: Check outputs
         run: |
