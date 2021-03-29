@@ -5,12 +5,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - uses: actions/upload-artifact@v2
+        with:
+          name: foo
+          path: action.yml
+
       - name: Self test
         id: selftest
 
         # Put your action repo here
         uses: ./
+        with:
+          artifact_name: foo
+          token: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Check outputs
         run: |
-          test "${{ steps.selftest.outputs.myOutput }}" == "Hello world"
+          test "${{ steps.selftest.outputs.myOutput }}" == "Artifact downloaded: foo"

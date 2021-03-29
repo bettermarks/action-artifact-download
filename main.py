@@ -4,7 +4,6 @@ import urllib3
 
 token = os.environ["INPUT_TOKEN"]
 artifact_name = os.environ["INPUT_ARTIFACT_NAME"]
-github_sha = os.getenv("GITHUB_SHA")
 repo = os.getenv("INPUT_REPO", os.getenv("GITHUB_REPOSITORY"))
 
 artifacts_url = f"https://api.github.com/repos/{repo}/actions/artifacts"
@@ -28,7 +27,7 @@ def download_artifact(artifact):
     r = http.request("GET", artifact["archive_download_url"], headers=headers)
     with open(artifact["name"], "wb") as f:
         f.write(r.data)
-        print("Artifact downloaded:", artifact["name"])
+        print(f"::set-output name=myOutput::Artifact downloaded: {artifact['name']}")
 
 
 if __name__ == "__main__":
