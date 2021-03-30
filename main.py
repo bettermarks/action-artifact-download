@@ -6,7 +6,7 @@ import urllib3
 token = os.environ["INPUT_TOKEN"]
 artifact_name = os.environ["INPUT_ARTIFACT_NAME"]
 repo = os.getenv("INPUT_REPO") or os.getenv("GITHUB_REPOSITORY")
-wait_seconds = int(os.getenv("INPUT_WAIT_SECONDS") or "10")
+wait_seconds = int(os.getenv("INPUT_WAIT_SECONDS") or "60")
 wait_sleep = 0.5
 
 artifacts_url = f"https://api.github.com/repos/{repo}/actions/artifacts"
