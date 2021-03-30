@@ -8,7 +8,7 @@ jobs:
         uses: fountainhead/action-wait-for-check@v1.0.0
         id: wait-for-build
         with:
-          token: "${{ secrets.GH_BOT_PAT }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
           checkName: artifact
 
       - uses: actions/checkout@master
@@ -20,7 +20,7 @@ jobs:
         uses: ./
         with:
           artifact_name: "${{ github.sha }}"
-          token: "${{ secrets.GH_BOT_PAT }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
           name: foobar
 
       - name: Check outputs

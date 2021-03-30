@@ -53,7 +53,7 @@ steps:
     uses: fountainhead/action-wait-for-check@v1.0.0
     id: wait-for-build
     with:
-      token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+      token: "${{ secrets.GITHUB_TOKEN }}"
       checkName: artifact
 
   - uses: actions/checkout@master
@@ -64,7 +64,7 @@ steps:
     uses: ./
     with:
       artifact_name: "${{ github.sha }}"
-      token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+      token: "${{ secrets.GITHUB_TOKEN }}"
       rename: foobar
 
   - name: Check outputs
