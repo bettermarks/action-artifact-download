@@ -1,3 +1,4 @@
+import time
 import json
 import os
 import urllib3
@@ -5,6 +6,8 @@ import urllib3
 token = os.environ["INPUT_TOKEN"]
 artifact_name = os.environ["INPUT_ARTIFACT_NAME"]
 repo = os.getenv("INPUT_REPO") or os.getenv("GITHUB_REPOSITORY")
+wait_seconds = int(os.getenv("INPUT_WAIT_SECONDS") or "5")
+wait_sleep = 0.5
 
 artifacts_url = f"https://api.github.com/repos/{repo}/actions/artifacts"
 headers = {
@@ -17,12 +20,28 @@ http = urllib3.PoolManager()
 
 def get_artifact(name):
     print(f"Download `{name}` from: {artifacts_url}")
-    r = http.request("GET", artifacts_url, headers=headers)
-    data = json.loads(r.data.decode("utf-8"))
-    for artifact in data["artifacts"]:
-        print("Check artifact", artifact["name"])
-        if artifact["name"] == name:
-            return artifact
+
+    t_started = time.time()
+    waiting = True
+    etag = None
+
+    while waiting:
+        if etag:
+            r = http.request(
+                "GET", artifacts_url, headers={**headers, "If-None-Match": etag}
+            )
+        else:
+            r = http.request("GET", artifacts_url, headers=headers)
+            etag = r.headers.get("etag")
+
+        data = json.loads(r.data.decode("utf-8"))
+        for artifact in data["artifacts"]:
+            print("Check artifact", artifact["name"])
+            if artifact["name"] == name:
+                return artifact
+
+        waiting = time.time() - t_started < wait_seconds
+        time.sleep(wait_sleep)
 
 
 def download_artifact(name):

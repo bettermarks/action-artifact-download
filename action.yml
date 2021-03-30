@@ -8,6 +8,8 @@ inputs:
     description: 'the personal access token'
   artifact_name:
     description: 'the name of the artifact'
+  wait_seconds:
+    description: 'wait for the artifact to appear'
 runs:
   using: 'docker'
   image: 'Dockerfile'
