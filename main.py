@@ -25,7 +25,6 @@ def get_artifact(name):
     waiting = True
     etag = None
 
-    __import__("pdb").set_trace()  # XXX BREAKPOINT
     while waiting:
         if etag:
             resp = http.request(
