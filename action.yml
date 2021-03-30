@@ -3,16 +3,18 @@ description: 'download an artifact'
 author: 'Bettermarks GmbH'
 inputs:
   repo:
-    description: 'the repository to download from'
+    description: 'The repository to download from'
   token:
-    description: 'the personal access token'
+    description: 'The personal access token'
   artifact_name:
-    description: 'the name of the artifact'
+    description: 'The name of the artifact'
+  rename:
+    description: 'An alternative name for the downloaded artifact'
   wait_seconds:
-    description: 'wait for the artifact to appear'
+    description: 'Wait for the artifact to appear'
 runs:
   using: 'docker'
   image: 'Dockerfile'
 branding:
-  color: "yellow"
-  icon: "download"
+  color: 'yellow'
+  icon: 'download'
