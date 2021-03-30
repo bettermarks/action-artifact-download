@@ -42,8 +42,8 @@ def get_artifact(name):
                     return artifact
 
         waiting = time.time() - t_started < wait_seconds
-        time.sleep(wait_sleep)
-        print("Waiting...", etag)
+        time.sleep(1)
+        print("Waiting...", etag, resp.status)
 
 
 def download_artifact(name):
