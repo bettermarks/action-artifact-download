@@ -25,17 +25,18 @@ def get_artifact(name):
     waiting = True
     etag = None
 
+    __import__("pdb").set_trace()  # XXX BREAKPOINT
     while waiting:
         if etag:
-            r = http.request(
+            resp = http.request(
                 "GET", artifacts_url, headers={**headers, "If-None-Match": etag}
             )
         else:
-            r = http.request("GET", artifacts_url, headers=headers)
-            etag = r.headers.get("etag")
+            resp = http.request("GET", artifacts_url, headers=headers)
+            etag = resp.headers.get("etag")
 
-        if r.status == 200:
-            data = json.loads(r.data.decode("utf-8"))
+        if resp.status == 200:
+            data = json.loads(resp.data.decode("utf-8"))
             for artifact in data["artifacts"]:
                 print("Check artifact", artifact["name"])
                 if artifact["name"] == name:
@@ -49,6 +50,7 @@ def download_artifact(name):
     artifact = get_artifact(name)
     if artifact is None:
         print(f"::set-output name=error::Artifact not found: {name}")
+        exit(1)
 
     r = http.request("GET", artifact["archive_download_url"], headers=headers)
     with open(artifact["name"], "wb") as f:
