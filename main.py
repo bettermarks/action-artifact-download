@@ -3,15 +3,16 @@ import json
 import os
 import urllib3
 
-token = os.environ["INPUT_TOKEN"]
-artifact_name = os.environ["INPUT_ARTIFACT_NAME"]
-repo = os.getenv("INPUT_REPO") or os.getenv("GITHUB_REPOSITORY")
-wait_seconds = int(os.getenv("INPUT_WAIT_SECONDS") or "60")
-wait_sleep = 0.5
+TOKEN = os.environ["INPUT_TOKEN"]
+ARTIFACT_NAME = os.environ["INPUT_ARTIFACT_NAME"]
+NAME = os.environ["INPUT_NAME"] or ARTIFACT_NAME
+REPO = os.getenv("INPUT_REPO") or os.getenv("GITHUB_REPOSITORY")
+WAIT_SECONDS = int(os.getenv("INPUT_WAIT_SECONDS") or "60")
+WAIT_SLEEP = 0.5
 
-artifacts_url = f"https://api.github.com/repos/{repo}/actions/artifacts"
+artifacts_url = f"https://api.github.com/repos/{REPO}/actions/artifacts"
 headers = {
-    "Authorization": f"token {token}",
+    "Authorization": f"token {TOKEN}",
     "User-Agent": "Python",
 }
 
@@ -41,22 +42,22 @@ def get_artifact(name):
                 if artifact["name"] == name:
                     return artifact
 
-        waiting = time.time() - t_started < wait_seconds
+        waiting = time.time() - t_started < WAIT_SECONDS
         time.sleep(1)
         print("Waiting...", etag, resp.status)
 
 
-def download_artifact(name):
+def download_artifact(name, new_name):
     artifact = get_artifact(name)
     if artifact is None:
         print(f"::set-output name=error::Artifact not found: {name}")
         exit(1)
 
     r = http.request("GET", artifact["archive_download_url"], headers=headers)
-    with open(artifact["name"], "wb") as f:
+    with open(new_name, "wb") as f:
         f.write(r.data)
         print(f"::set-output name=success::Artifact downloaded: {artifact['name']}")
 
 
 if __name__ == "__main__":
-    download_artifact(artifact_name)
+    download_artifact(ARTIFACT_NAME, NAME)
