@@ -6,7 +6,7 @@ import urllib3
 token = os.environ["INPUT_TOKEN"]
 artifact_name = os.environ["INPUT_ARTIFACT_NAME"]
 repo = os.getenv("INPUT_REPO") or os.getenv("GITHUB_REPOSITORY")
-wait_seconds = int(os.getenv("INPUT_WAIT_SECONDS") or "5")
+wait_seconds = int(os.getenv("INPUT_WAIT_SECONDS") or "10")
 wait_sleep = 0.5
 
 artifacts_url = f"https://api.github.com/repos/{repo}/actions/artifacts"
@@ -43,6 +43,7 @@ def get_artifact(name):
 
         waiting = time.time() - t_started < wait_seconds
         time.sleep(wait_sleep)
+        print("Waiting...", etag)
 
 
 def download_artifact(name):
