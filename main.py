@@ -34,11 +34,12 @@ def get_artifact(name):
             r = http.request("GET", artifacts_url, headers=headers)
             etag = r.headers.get("etag")
 
-        data = json.loads(r.data.decode("utf-8"))
-        for artifact in data["artifacts"]:
-            print("Check artifact", artifact["name"])
-            if artifact["name"] == name:
-                return artifact
+        if r.status == 200:
+            data = json.loads(r.data.decode("utf-8"))
+            for artifact in data["artifacts"]:
+                print("Check artifact", artifact["name"])
+                if artifact["name"] == name:
+                    return artifact
 
         waiting = time.time() - t_started < wait_seconds
         time.sleep(wait_sleep)
