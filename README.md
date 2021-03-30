@@ -26,7 +26,7 @@ jobs:
       uses: bettermarks/action-artifact-download@0.1.0
       with:
         repo: organization/the-repo-to-use
-        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         artifact_name: my-artifact
         rename: new-artifact-name    
         wait_seconds: 60  
