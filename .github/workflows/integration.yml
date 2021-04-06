@@ -21,7 +21,7 @@ jobs:
         with:
           artifact_name: "${{ github.sha }}"
           token: "${{ secrets.GITHUB_TOKEN }}"
-          name: foobar
+          rename: foobar
 
       - name: Check outputs
         run: |
