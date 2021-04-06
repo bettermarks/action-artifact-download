@@ -5,7 +5,7 @@ import urllib3
 
 TOKEN = os.environ["INPUT_TOKEN"]
 ARTIFACT_NAME = os.environ["INPUT_ARTIFACT_NAME"]
-NAME = os.environ["INPUT_NAME"] or ARTIFACT_NAME
+NAME = os.environ["INPUT_RENAME"] or ARTIFACT_NAME
 REPO = os.getenv("INPUT_REPO") or os.getenv("GITHUB_REPOSITORY")
 WAIT_SECONDS = int(os.getenv("INPUT_WAIT_SECONDS") or "60")
 WAIT_SLEEP = 0.5
