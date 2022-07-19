@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Download artifact from build
-      uses: bettermarks/action-artifact-download@0.1.0
+      uses: bettermarks/action-artifact-download@0.3.0
       with:
         repo: organization/the-repo-to-use
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -60,7 +60,7 @@ steps:
     id: selftest
 
     # Put your action repo here
-    uses: ./
+    uses: bettermarks/action-artifact-download
     with:
       artifact_name: "${{ github.sha }}"
       token: "${{ secrets.GITHUB_TOKEN }}"
