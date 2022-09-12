@@ -23,6 +23,7 @@ def get_artifact_id(branch):
     if not r.ok:
         print(f"::set-output name=error::{r.content}") # TODO change error
 
+    print(f"::set-output name=error::{r.content}") # TODO change error
     for artifact in j['artifacts']:
         if artifact["workflow_run"]["head_branch"] == branch and artifact["name"] == ARTIFACT_NAME:
             return artifact["archive_download_url"]
