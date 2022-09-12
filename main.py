@@ -6,7 +6,6 @@ import shutil
 TOKEN = os.environ["INPUT_TOKEN"]
 ARTIFACT_NAME = os.environ["INPUT_ARTIFACT_NAME"]
 NEW_ARTIFACT_NAME = os.environ["INPUT_NEW_ARTIFACT_NAME"]
-NAME = os.environ["INPUT_RENAME"] or ARTIFACT_NAME
 REPO = os.getenv("INPUT_REPO") or os.getenv("GITHUB_REPOSITORY")
 BRANCH = os.environ["INPUT_BRANCH"]
 OWNER = os.environ["INPUT_OWNER"]
