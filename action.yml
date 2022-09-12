@@ -8,10 +8,12 @@ inputs:
     description: 'The personal access token'
   artifact_name:
     description: 'The name of the artifact'
-  rename:
-    description: 'An alternative name for the downloaded artifact'
-  wait_seconds:
-    description: 'Wait for the artifact to appear'
+  new_artifact_name:
+    description: 'test'
+  branch: 
+    description: 'test'
+  owner: 
+    description: 'test'
 runs:
   using: 'docker'
   image: 'Dockerfile'
