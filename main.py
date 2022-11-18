@@ -9,8 +9,9 @@ NAME = os.environ["INPUT_RENAME"] or ARTIFACT_NAME
 REPO = os.getenv("INPUT_REPO") or os.getenv("GITHUB_REPOSITORY")
 WAIT_SECONDS = int(os.getenv("INPUT_WAIT_SECONDS") or "60")
 WAIT_SLEEP = 0.5
+GITHUB_OUTPUT = os.environ["GITHUB_OUTPUT"]
 
-artifacts_url = f"https://api.github.com/repos/{REPO}/actions/artifacts"
+artifacts_url = f"https://api.github.com/repos/{REPO}/actions/artifacts?name={NAME}"
 headers = {
     "Authorization": f"token {TOKEN}",
     "User-Agent": "Python",
@@ -37,26 +38,29 @@ def get_artifact(name):
 
         if resp.status == 200:
             data = json.loads(resp.data.decode("utf-8"))
-            for artifact in data["artifacts"]:
-                print("Check artifact", artifact["name"])
-                if artifact["name"] == name:
-                    return artifact
+            return data["artifacts"][0] if data["artifacts"] else None
 
         waiting = time.time() - t_started < WAIT_SECONDS
         time.sleep(1)
         print("Waiting...", etag, resp.status)
 
 
+def set_output(name, value):
+    with open(GITHUB_OUTPUT, "a") as github_output:
+        github_output.write("{}={}".format(name, value))
+
+
 def download_artifact(name, new_name):
     artifact = get_artifact(name)
     if artifact is None:
-        print(f"::set-output name=error::Artifact not found: {name}")
+        set_output("error", "Artifact not found: {}".format(name))
         exit(1)
 
     r = http.request("GET", artifact["archive_download_url"], headers=headers)
     with open(new_name, "wb") as f:
         f.write(r.data)
-        print(f"::set-output name=success::Artifact downloaded: {artifact['name']}")
+        set_output("success", "Artifact downloaded: {}".format(artifact["name"]))
+        set_output("commit", artifact["workflow_run"]["head_sha"])
 
 
 if __name__ == "__main__":
