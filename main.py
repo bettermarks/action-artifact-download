@@ -11,7 +11,9 @@ WAIT_SECONDS = int(os.getenv("INPUT_WAIT_SECONDS") or "60")
 WAIT_SLEEP = 0.5
 GITHUB_OUTPUT = os.environ["GITHUB_OUTPUT"]
 
-artifacts_url = f"https://api.github.com/repos/{REPO}/actions/artifacts?name={NAME}"
+artifacts_url = (
+    f"https://api.github.com/repos/{REPO}/actions/artifacts?name={ARTIFACT_NAME}"
+)
 headers = {
     "Authorization": f"token {TOKEN}",
     "User-Agent": "Python",
