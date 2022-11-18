@@ -26,4 +26,5 @@ jobs:
       - name: Check outputs
         run: |
           test "${{ steps.selftest.outputs.success }}" == "Artifact downloaded: ${{ github.sha }}"
+          test "${{ steps.selftest.outputs.commit }}" == "${{ github.sha }}"
           test -f foobar

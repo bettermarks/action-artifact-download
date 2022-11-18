@@ -12,6 +12,9 @@ inputs:
     description: 'An alternative name for the downloaded artifact'
   wait_seconds:
     description: 'Wait for the artifact to appear'
+outputs:
+  commit:
+    description: 'The commit sha corresponding to the artifact'
 runs:
   using: 'docker'
   image: 'Dockerfile'
