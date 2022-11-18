@@ -11,9 +11,7 @@ WAIT_SECONDS = int(os.getenv("INPUT_WAIT_SECONDS") or "60")
 WAIT_SLEEP = 0.5
 GITHUB_OUTPUT = os.environ["GITHUB_OUTPUT"]
 
-artifacts_url = (
-    f"https://api.github.com/repos/{REPO}/actions/artifacts?name={ARTIFACT_NAME}"
-)
+artifacts_url = f"https://api.github.com/repos/{REPO}/actions/artifacts"
 headers = {
     "Authorization": f"token {TOKEN}",
     "User-Agent": "Python",
@@ -32,10 +30,15 @@ def get_artifact(name):
     while waiting:
         if etag:
             resp = http.request(
-                "GET", artifacts_url, headers={**headers, "If-None-Match": etag}
+                "GET",
+                artifacts_url,
+                headers={**headers, "If-None-Match": etag},
+                fields={"name": ARTIFACT_NAME},
             )
         else:
-            resp = http.request("GET", artifacts_url, headers=headers)
+            resp = http.request(
+                "GET", artifacts_url, headers=headers, fields={"name": ARTIFACT_NAME}
+            )
             etag = resp.headers.get("etag")
 
         if resp.status == 200:
