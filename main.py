@@ -49,13 +49,13 @@ def get_artifact(name):
 
 def set_output(name, value):
     with open(GITHUB_OUTPUT, "a") as github_output:
-        github_output.write("{}={}".format(name, value))
+        github_output.write(f"{name}={value}\n")
 
 
 def download_artifact(name, new_name):
     artifact = get_artifact(name)
     if artifact is None:
-        set_output("error", "Artifact not found: {}".format(name))
+        set_output("error", f"Artifact not found: {name}")
         exit(1)
 
     r = http.request("GET", artifact["archive_download_url"], headers=headers)
