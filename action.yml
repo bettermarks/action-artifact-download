@@ -25,7 +25,7 @@ runs:
     - name: download artifact
       id: main
       shell: bash
-      run: main.py
+      run: python main.py
 
 branding:
   color: 'yellow'
