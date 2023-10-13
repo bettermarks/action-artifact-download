@@ -16,6 +16,12 @@ outputs:
   commit:
     description: 'The commit sha corresponding to the artifact'
     value: ${{ steps.main.outputs.commit }}
+  success:
+    description: 'Indicates success of the action'
+    value: ${{ steps.main.outputs.success }}
+  error:
+    description: 'Indicates if there was an error'
+    value: ${{ steps.main.outputs.error }}
 runs:
   using: 'composite'
   steps:
