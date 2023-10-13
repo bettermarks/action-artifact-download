@@ -15,9 +15,18 @@ inputs:
 outputs:
   commit:
     description: 'The commit sha corresponding to the artifact'
+    value: ${{ steps.main.outputs.commit }}
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - name: install requirements
+      shell: bash
+      run: pip install requests
+    - name: download artifact
+      id: main
+      shell: bash
+      run: main.py
+
 branding:
   color: 'yellow'
   icon: 'download'
