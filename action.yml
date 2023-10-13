@@ -25,6 +25,12 @@ runs:
     - name: download artifact
       id: main
       shell: bash
+      env:
+        INPUT_TOKEN: ${{ inputs.token }}
+        INPUT_ARTIFACT_NAME: ${{ inputs.artifact_name }}
+        INPUT_RENAME: ${{ inputs.rename }}
+        INPUT_REPO: ${{ inputs.repo }}
+        INPUT_WAIT_SECONDS: ${{ inputs.wait_seconds }}
       run: python main.py
 
 branding:
