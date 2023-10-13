@@ -15,9 +15,30 @@ inputs:
 outputs:
   commit:
     description: 'The commit sha corresponding to the artifact'
+    value: ${{ steps.main.outputs.commit }}
+  success:
+    description: 'Indicates success of the action'
+    value: ${{ steps.main.outputs.success }}
+  error:
+    description: 'Indicates if there was an error'
+    value: ${{ steps.main.outputs.error }}
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - name: install requirements
+      shell: bash
+      run: pip install requests
+    - name: download artifact
+      id: main
+      shell: bash
+      env:
+        INPUT_TOKEN: ${{ inputs.token }}
+        INPUT_ARTIFACT_NAME: ${{ inputs.artifact_name }}
+        INPUT_RENAME: ${{ inputs.rename }}
+        INPUT_REPO: ${{ inputs.repo }}
+        INPUT_WAIT_SECONDS: ${{ inputs.wait_seconds }}
+      run: python main.py
+
 branding:
   color: 'yellow'
   icon: 'download'
