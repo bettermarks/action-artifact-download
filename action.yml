@@ -37,7 +37,7 @@ runs:
         INPUT_RENAME: ${{ inputs.rename }}
         INPUT_REPO: ${{ inputs.repo }}
         INPUT_WAIT_SECONDS: ${{ inputs.wait_seconds }}
-      run: python main.py
+      run: python "${{ github.action_path }}/main.py"
 
 branding:
   color: 'yellow'
